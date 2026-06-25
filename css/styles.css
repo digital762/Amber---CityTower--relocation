@@ -249,6 +249,7 @@ h2 {
 }
 .about-images img {
   width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 2px;
+  background-color: var(--beige);
   transition: transform 0.4s ease;
 }
 .about-images img:hover { transform: scale(1.02); }
@@ -318,6 +319,7 @@ h2 {
   flex: 0 0 calc(33.333% - 2px);
   position: relative; overflow: hidden;
   aspect-ratio: 4/3; cursor: pointer;
+  background-color: #ddd5cd;
 }
 .amenity-slide img {
   width: 100%; height: 100%; object-fit: cover;
