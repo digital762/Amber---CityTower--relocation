@@ -28,53 +28,59 @@ function smoothScrollTo(targetY, duration) {
 
 document.querySelectorAll('a[href^="#"]').forEach(function(link) {
   link.addEventListener('click', function(e) {
-    const id = this.getAttribute('href').slice(1);
-    const target = document.getElementById(id);
+    var id = this.getAttribute('href').slice(1);
+    var target = document.getElementById(id);
     if (!target) return;
     e.preventDefault();
-    const navH = document.querySelector('nav').offsetHeight;
-    const targetY = target.getBoundingClientRect().top + window.scrollY - navH - 12;
+    var navH = document.querySelector('nav').offsetHeight;
+    var targetY = target.getBoundingClientRect().top + window.scrollY - navH - 12;
     smoothScrollTo(targetY, 1050);
-
-    // close mobile menu if open
     closeMobileMenu();
   });
 });
 
 /* ─── NAV SCROLL SHADOW ─── */
-const nav = document.querySelector('nav');
+var nav = document.querySelector('nav');
 window.addEventListener('scroll', function() {
   nav.classList.toggle('scrolled', window.scrollY > 40);
 }, { passive: true });
 
+/* ─── HERO PARALLAX ─── */
+var heroBg = document.querySelector('.hero-bg');
+if (heroBg) {
+  window.addEventListener('scroll', function() {
+    if (window.scrollY < window.innerHeight) {
+      heroBg.style.transform = 'translateY(' + window.scrollY * 0.25 + 'px)';
+    }
+  }, { passive: true });
+}
+
 /* ─── MOBILE HAMBURGER NAV ─── */
-const hamburger = document.getElementById('hamburger');
-const mobileMenu = document.getElementById('mobileMenu');
+var hamburger = document.getElementById('hamburger');
+var mobileMenu = document.getElementById('mobileMenu');
 
 function closeMobileMenu() {
   if (!mobileMenu) return;
   mobileMenu.classList.remove('open');
-  hamburger.classList.remove('open');
+  if (hamburger) hamburger.classList.remove('open');
   document.body.style.overflow = '';
 }
 
 if (hamburger && mobileMenu) {
   hamburger.addEventListener('click', function() {
-    const isOpen = mobileMenu.classList.toggle('open');
+    var isOpen = mobileMenu.classList.toggle('open');
     hamburger.classList.toggle('open', isOpen);
     document.body.style.overflow = isOpen ? 'hidden' : '';
   });
-
   mobileMenu.addEventListener('click', function(e) {
     if (e.target === mobileMenu) closeMobileMenu();
   });
 }
 
 /* ─── SCROLL-TRIGGERED FADE-UP ─── */
-const fadeEls = document.querySelectorAll('.fade-up');
-
+var fadeEls = document.querySelectorAll('.fade-up');
 if ('IntersectionObserver' in window) {
-  const observer = new IntersectionObserver(function(entries) {
+  var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
@@ -82,35 +88,28 @@ if ('IntersectionObserver' in window) {
       }
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
   fadeEls.forEach(function(el) { observer.observe(el); });
 } else {
-  /* fallback: show all immediately */
   fadeEls.forEach(function(el) { el.classList.add('visible'); });
 }
 
-/* ─── FORM VALIDATION & SUBMISSION ─── */
-const form = document.getElementById('contactForm');
-const successMsg = document.getElementById('formSuccess');
+/* ─── FORM VALIDATION ─── */
+var form = document.getElementById('contactForm');
+var successMsg = document.getElementById('formSuccess');
 
 function showError(input, msg) {
   input.classList.add('error');
-  const err = input.parentElement.querySelector('.field-error');
+  var err = input.parentElement.querySelector('.field-error');
   if (err) { err.textContent = msg; err.classList.add('visible'); }
 }
-
 function clearError(input) {
   input.classList.remove('error');
-  const err = input.parentElement.querySelector('.field-error');
+  var err = input.parentElement.querySelector('.field-error');
   if (err) err.classList.remove('visible');
 }
-
-function validateEmail(v) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-}
+function validateEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
 
 if (form) {
-  /* live clear on input */
   form.querySelectorAll('input, select').forEach(function(el) {
     el.addEventListener('input', function() { clearError(this); });
     el.addEventListener('change', function() { clearError(this); });
@@ -118,33 +117,30 @@ if (form) {
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
-    let valid = true;
-
-    const company = form.querySelector('[name="company"]');
-    const name    = form.querySelector('[name="name"]');
-    const email   = form.querySelector('[name="email"]');
-    const phone   = form.querySelector('[name="phone"]');
-    const empSize = form.querySelector('[name="employees"]');
-    const movein  = form.querySelector('[name="movein"]');
+    var valid = true;
+    var company = form.querySelector('[name="company"]');
+    var name    = form.querySelector('[name="name"]');
+    var email   = form.querySelector('[name="email"]');
+    var phone   = form.querySelector('[name="phone"]');
+    var empSize = form.querySelector('[name="employees"]');
+    var movein  = form.querySelector('[name="movein"]');
 
     [company, name, email, phone, empSize, movein].forEach(clearError);
 
     if (!company.value.trim()) { showError(company, 'Company name is required'); valid = false; }
-    if (!name.value.trim())    { showError(name,    'Your name is required');     valid = false; }
+    if (!name.value.trim())    { showError(name, 'Your name is required'); valid = false; }
     if (!email.value.trim() || !validateEmail(email.value)) {
       showError(email, 'A valid business email is required'); valid = false;
     }
-    if (!phone.value.trim())   { showError(phone,   'Phone number is required'); valid = false; }
-    if (!empSize.value)        { showError(empSize,  'Please select a range');   valid = false; }
-    if (!movein.value)         { showError(movein,   'Please select a timeframe'); valid = false; }
-
+    if (!phone.value.trim())   { showError(phone, 'Phone number is required'); valid = false; }
+    if (!empSize.value)        { showError(empSize, 'Please select a range'); valid = false; }
+    if (!movein.value)         { showError(movein, 'Please select a timeframe'); valid = false; }
     if (!valid) return;
 
-    const btn = form.querySelector('.btn-submit');
+    var btn = form.querySelector('.btn-submit');
     btn.disabled = true;
     btn.textContent = 'Sending…';
 
-    /* Simulate async submission — replace with real endpoint when ready */
     setTimeout(function() {
       form.style.display = 'none';
       if (successMsg) successMsg.classList.add('visible');
@@ -152,13 +148,93 @@ if (form) {
   });
 }
 
-/* ─── SUBTLE HERO PARALLAX ─── */
-const heroBg = document.querySelector('.hero-bg');
-if (heroBg) {
-  window.addEventListener('scroll', function() {
-    const offset = window.scrollY;
-    if (offset < window.innerHeight) {
-      heroBg.style.transform = 'translateY(' + offset * 0.25 + 'px)';
+/* ─── AMENITY CAROUSEL ─── */
+(function() {
+  var track   = document.getElementById('amenityTrack');
+  var dotsWrap = document.getElementById('amenityDots');
+  var btnPrev = document.getElementById('amenityPrev');
+  var btnNext = document.getElementById('amenityNext');
+  if (!track) return;
+
+  var slides = track.querySelectorAll('.amenity-slide');
+  var total  = slides.length;
+  var current = 0;
+
+  function getPerView() {
+    if (window.innerWidth <= 600) return 1;
+    if (window.innerWidth <= 1024) return 2;
+    return 3;
+  }
+
+  /* Build dots dynamically */
+  function buildDots() {
+    dotsWrap.innerHTML = '';
+    var pv = getPerView();
+    var count = Math.max(1, total - pv + 1);
+    for (var i = 0; i < count; i++) {
+      var dot = document.createElement('button');
+      dot.className = 'carousel-dot' + (i === current ? ' active' : '');
+      dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+      (function(idx) {
+        dot.addEventListener('click', function() { current = idx; update(); });
+      })(i);
+      dotsWrap.appendChild(dot);
     }
+  }
+
+  function update() {
+    var pv = getPerView();
+    var maxIndex = Math.max(0, total - pv);
+    current = Math.min(current, maxIndex);
+
+    /* Calculate pixel offset */
+    var wrapW  = track.parentElement.offsetWidth;
+    var gap    = 3;
+    var cardW  = (wrapW - gap * (pv - 1)) / pv;
+    var offset = current * (cardW + gap);
+    track.style.transform = 'translateX(-' + offset + 'px)';
+
+    /* Update dots */
+    var dots = dotsWrap.querySelectorAll('.carousel-dot');
+    dots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
+
+    /* Button opacity */
+    if (btnPrev) btnPrev.style.opacity = current === 0 ? '0.3' : '1';
+    if (btnNext) btnNext.style.opacity = current >= maxIndex ? '0.3' : '1';
+  }
+
+  buildDots();
+  update();
+
+  if (btnPrev) {
+    btnPrev.addEventListener('click', function() {
+      if (current > 0) { current--; update(); }
+    });
+  }
+  if (btnNext) {
+    btnNext.addEventListener('click', function() {
+      var pv = getPerView();
+      var maxIndex = Math.max(0, total - pv);
+      if (current < maxIndex) { current++; update(); }
+    });
+  }
+
+  var resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() { buildDots(); update(); }, 120);
   }, { passive: true });
-}
+
+  /* Touch / swipe */
+  var touchStartX = 0;
+  track.addEventListener('touchstart', function(e) {
+    touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+  track.addEventListener('touchend', function(e) {
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    var pv = getPerView();
+    var maxIndex = Math.max(0, total - pv);
+    if (dx < -50 && current < maxIndex) { current++; update(); }
+    if (dx > 50  && current > 0)        { current--; update(); }
+  }, { passive: true });
+})();
