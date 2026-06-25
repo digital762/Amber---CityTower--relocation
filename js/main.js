@@ -1,21 +1,29 @@
 /* ─── SMOOTH SCROLL with easing ─── */
-function easeInOutQuart(t) {
-  return t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2;
+function easeOutExpo(t) {
+  return t >= 1 ? 1 : 1 - Math.pow(2, -10 * t);
 }
 
+var _scrollRaf = null;
+
 function smoothScrollTo(targetY, duration) {
-  const startY = window.scrollY;
-  const diff = targetY - startY;
-  let startTime = null;
+  if (_scrollRaf) cancelAnimationFrame(_scrollRaf);
+
+  var startY = window.scrollY;
+  var diff = targetY - startY;
+  var startTime = null;
 
   function step(timestamp) {
     if (!startTime) startTime = timestamp;
-    const elapsed = timestamp - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-    window.scrollTo(0, startY + diff * easeInOutQuart(progress));
-    if (progress < 1) requestAnimationFrame(step);
+    var elapsed = timestamp - startTime;
+    var progress = Math.min(elapsed / duration, 1);
+    window.scrollTo(0, startY + diff * easeOutExpo(progress));
+    if (progress < 1) {
+      _scrollRaf = requestAnimationFrame(step);
+    } else {
+      _scrollRaf = null;
+    }
   }
-  requestAnimationFrame(step);
+  _scrollRaf = requestAnimationFrame(step);
 }
 
 document.querySelectorAll('a[href^="#"]').forEach(function(link) {
@@ -26,7 +34,7 @@ document.querySelectorAll('a[href^="#"]').forEach(function(link) {
     e.preventDefault();
     const navH = document.querySelector('nav').offsetHeight;
     const targetY = target.getBoundingClientRect().top + window.scrollY - navH - 12;
-    smoothScrollTo(targetY, 900);
+    smoothScrollTo(targetY, 1050);
 
     // close mobile menu if open
     closeMobileMenu();
