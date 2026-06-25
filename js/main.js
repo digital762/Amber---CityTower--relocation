@@ -161,8 +161,11 @@ if (form) {
   var current = 0;
 
   function getPerView() {
-    if (window.innerWidth <= 600) return 1;
-    if (window.innerWidth <= 1024) return 2;
+    /* Base slides-per-view on the carousel's own width, not the window,
+       since the carousel sits inside a column that is narrower than the page. */
+    var w = track.parentElement.offsetWidth;
+    if (w <= 460) return 1;
+    if (w <= 820) return 2;
     return 3;
   }
 
@@ -191,6 +194,13 @@ if (form) {
     var wrapW  = track.parentElement.offsetWidth;
     var gap    = 3;
     var cardW  = (wrapW - gap * (pv - 1)) / pv;
+
+    /* Size slides from JS so the offset math can't drift from CSS */
+    slides.forEach(function(s) {
+      s.style.flex = '0 0 ' + cardW + 'px';
+      s.style.maxWidth = cardW + 'px';
+    });
+
     var offset = current * (cardW + gap);
     track.style.transform = 'translateX(-' + offset + 'px)';
 

@@ -297,9 +297,13 @@ h2 {
 .amenities { background: var(--beige); }
 .amenities-inner { max-width: 1200px; margin: 0 auto; }
 .amenities-layout {
-  display: grid; grid-template-columns: 1fr 1.6fr; gap: 64px; align-items: start;
+  display: grid; grid-template-columns: 1fr 1.2fr; gap: 56px; align-items: start;
 }
-.amenities-text .lead { max-width: none; margin-bottom: 0; }
+.amenities-text .lead { max-width: none; margin-bottom: 20px; }
+.amenities-copy {
+  font-size: 15px; color: var(--slate); line-height: 1.75; margin-bottom: 18px;
+}
+.amenities-copy:last-child { margin-bottom: 0; }
 
 /* Amenity carousel */
 .amenity-carousel-wrap {
