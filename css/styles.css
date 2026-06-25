@@ -291,11 +291,15 @@ h2 {
   font-size: 15px; color: var(--slate); display: flex; align-items: center; gap: 12px;
 }
 .icon-list li::before { display: none; }
-.loc-icon { font-size: 18px; flex-shrink: 0; line-height: 1; }
+.loc-svg { width: 20px; height: 20px; flex-shrink: 0; color: var(--steel); }
 
 /* ─── SECTION 03: AMENITIES ─── */
 .amenities { background: var(--beige); }
 .amenities-inner { max-width: 1200px; margin: 0 auto; }
+.amenities-layout {
+  display: grid; grid-template-columns: 1fr 1.6fr; gap: 64px; align-items: start;
+}
+.amenities-text .lead { max-width: none; margin-bottom: 0; }
 
 /* Amenity carousel */
 .amenity-carousel-wrap {
@@ -355,21 +359,10 @@ h2 {
 
 /* ─── SECTION 04: FORM ─── */
 .contact { background: var(--white); }
-.contact-inner {
-  max-width: 1200px; margin: 0 auto;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
-}
-.contact-text h2 { margin-bottom: 16px; }
-.contact-text .lead { margin-bottom: 32px; }
-.contact-detail { display: flex; flex-direction: column; gap: 16px; }
-.cd-item { display: flex; align-items: flex-start; gap: 14px; }
-.cd-icon {
-  width: 36px; height: 36px; background: var(--beige); border-radius: 2px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px; flex-shrink: 0;
-}
-.cd-item p { font-size: 13px; color: var(--slate); line-height: 1.5; }
-.cd-item strong { font-size: 14px; color: var(--navy); display: block; margin-bottom: 2px; }
+.contact-inner { max-width: 760px; margin: 0 auto; }
+.contact-header { text-align: center; margin-bottom: 48px; }
+.contact-header h2 { margin-bottom: 16px; }
+.contact-header .lead { max-width: none; margin-bottom: 0; }
 
 .contact-form {
   background: var(--beige); padding: 48px 40px; border-radius: 2px;
@@ -460,8 +453,8 @@ footer .footer-links a:hover { color: rgba(255,255,255,0.7); }
   section { padding: 64px 24px; }
   .hero-content { padding: 0 24px 60px; }
   .about-grid,
-  .relocation-inner,
-  .contact-inner { grid-template-columns: 1fr; gap: 40px; }
+  .relocation-inner { grid-template-columns: 1fr; gap: 40px; }
+  .amenities-layout { grid-template-columns: 1fr; gap: 40px; }
   .offer-box { position: static; }
   .stats-bar { flex-direction: column; }
   .stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
