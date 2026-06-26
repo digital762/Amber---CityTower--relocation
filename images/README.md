@@ -24,7 +24,7 @@ The first photo is the full-width hero (16:9); the other four sit in a 2×2 grid
 | `amenity-infinity-pool.jpg`   | amenity-Infinity pool | Infinity Pool     |
 | `amenity-gym.jpg`             | amenity-Gym           | Fitness Centre    |
 | `amenity-yoga-studio.jpg`     | amenity-Yoga studio   | Yoga Studio       |
-| `amenity-padel-court.jpg`     | amenity-Paddle court  | Padel Courts      |
+| `amenity-padel-court.jpg`     | amenity-Padel court   | Padel Courts      |
 | `amenity-football.jpg`        | amenity-Football      | Football Pitch    |
 | `amenity-lounge.jpg`          | amenity-Lounge        | Residents' Lounge |
 | `amenity-splash-bar.jpg`      | amenity-Splash bar    | Splash Bar        |

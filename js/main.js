@@ -41,9 +41,11 @@ document.querySelectorAll('a[href^="#"]').forEach(function(link) {
 
 /* ─── NAV SCROLL SHADOW ─── */
 var nav = document.querySelector('nav');
-window.addEventListener('scroll', function() {
-  nav.classList.toggle('scrolled', window.scrollY > 40);
-}, { passive: true });
+if (nav) {
+  window.addEventListener('scroll', function() {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+}
 
 /* ─── HERO PARALLAX ─── */
 var heroBg = document.querySelector('.hero-bg');
@@ -62,7 +64,10 @@ var mobileMenu = document.getElementById('mobileMenu');
 function closeMobileMenu() {
   if (!mobileMenu) return;
   mobileMenu.classList.remove('open');
-  if (hamburger) hamburger.classList.remove('open');
+  if (hamburger) {
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+  }
   document.body.style.overflow = '';
 }
 
@@ -70,6 +75,7 @@ if (hamburger && mobileMenu) {
   hamburger.addEventListener('click', function() {
     var isOpen = mobileMenu.classList.toggle('open');
     hamburger.classList.toggle('open', isOpen);
+    hamburger.setAttribute('aria-expanded', String(isOpen));
     document.body.style.overflow = isOpen ? 'hidden' : '';
   });
   mobileMenu.addEventListener('click', function(e) {
@@ -99,11 +105,13 @@ var successMsg = document.getElementById('formSuccess');
 
 function showError(input, msg) {
   input.classList.add('error');
+  input.setAttribute('aria-invalid', 'true');
   var err = input.parentElement.querySelector('.field-error');
   if (err) { err.textContent = msg; err.classList.add('visible'); }
 }
 function clearError(input) {
   input.classList.remove('error');
+  input.removeAttribute('aria-invalid');
   var err = input.parentElement.querySelector('.field-error');
   if (err) err.classList.remove('visible');
 }
@@ -154,7 +162,7 @@ if (form) {
   var dotsWrap = document.getElementById('amenityDots');
   var btnPrev = document.getElementById('amenityPrev');
   var btnNext = document.getElementById('amenityNext');
-  if (!track) return;
+  if (!track || !dotsWrap) return;
 
   var slides = track.querySelectorAll('.amenity-slide');
   var total  = slides.length;
@@ -232,7 +240,7 @@ if (form) {
   var resizeTimer;
   window.addEventListener('resize', function() {
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function() { buildDots(); update(); }, 120);
+    resizeTimer = setTimeout(function() { update(); buildDots(); }, 120);
   }, { passive: true });
 
   /* Touch / swipe */
